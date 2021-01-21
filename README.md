@@ -21,3 +21,5 @@ l'identifiant de la carte dans un channel redis.
 Le script `dispatch.py` attend sur le channel redis, une carte, une fois qu'une carte est reçue, il
 vérifie dans quel file opérer et met à jour les files. La mise à jour est envoyée via websockets
 aux clients web.
+
+![Preview](https://i.imgur.com/OxGFg58.png)
