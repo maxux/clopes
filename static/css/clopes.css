@@ -1,0 +1,97 @@
+html {
+    background-image: url(../wallpaper/default.jpg);
+    background-size: cover;
+    height: 100%;
+}
+
+body {
+    padding: 15px;
+    background-color: #333030;
+    background: rgba(0, 0, 0, 0.6) !important;
+    height: 100%;
+}
+
+/* background fix */
+#wrapper {
+    background: transparent !important;
+}
+
+.panel {
+    background: rgba(50, 50, 50, 0.6) !important;
+}
+
+.panel-title {
+    font-size: 2em;
+}
+
+.panel-body {
+    transition: background-color 2s;
+}
+
+.panel-body ol {
+    margin: 0;
+    padding: 0 0 0 3em;
+}
+
+.panel-body ol li {
+    font-size: 1.5em;
+}
+
+.panel-body ol li span {
+    position: relative;
+    font-size: 1.5em;
+    left: 0.2em;
+}
+
+#outside-body.okay {
+    background: #2e5028;
+}
+
+#outside-body.warning {
+    background: #594125;
+}
+
+#outside-body.full {
+    background: #753434; 
+}
+
+#outside-free {
+    font-weight: bold;
+    font-size: 2.5em;
+    text-align: center;
+    color: #afc49c;
+}
+
+#queue-empty {
+    text-align: center;
+    font-weight: bold;
+    font-size: 2.5em;
+    color: #5569a0;
+}
+
+.glyphicon-text {
+    padding-right: 6px;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+#disconnected {
+    position: absolute;
+    bottom: 5px;
+    right: 15px;
+    color: #A52A2A;
+    font-weight: bold;
+    animation: blinker 1s linear infinite;
+}
+
+@media (max-width: 640px) {
+    .row-sensor {
+        text-align: center;
+    }
+
+    .row-sensor .updated {
+        text-align: center;
+    }
+}

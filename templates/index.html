@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Pause Clope</title>
+
+    <link href="static/css/bootstrap.dark.min.css" rel="stylesheet">
+    <link href="static/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="static/css/clopes.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default panel-final">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span class="glyphicon glyphicon-home glyphicon-text"></span>
+                            Sur la terrace
+                        </h3>
+                    </div>
+                    <div class="panel-body" id="outside-body">
+                        <ol id="outside">
+                        </ol>
+
+                        <div id="outside-free">La terrace est libre !</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin: 1em;"></div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default panel-final">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span class="glyphicon glyphicon-hourglass glyphicon-text"></span>
+                            File d'attente
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <ol id="queue">
+                        </ol>
+
+                        <div id="queue-empty">La file d'attente est vide !</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="disconnected">Connecting...</div>
+    </div>
+    </div>
+
+    <script src="static/js/jquery-3.2.1.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/clopes.js"></script>
+</body>
+
+</html>
