@@ -12,9 +12,6 @@ class Dispatcher():
         self.redis = redis.Redis("10.241.0.240")
         self.db = sqlite3.connect("clopes.sqlite3")
 
-        self.outside = []
-        self.queue = []
-
     def resolv(self, card):
         cur = self.db.cursor()
         cur.execute("SELECT name FROM users WHERE card = ?", (card,))
@@ -25,15 +22,20 @@ class Dispatcher():
 
         return "Unknown (%s)" % card
 
+    def persist(self, card):
+        cur = self.db.cursor()
+        cur.execute("INSERT INTO history (card, moment) VALUES (?, datetime());", (card,))
+        self.db.commit()
+
     def getlist(self):
         outside = []
         queue = []
 
-        for i in self.outside:
-            outside.append(self.resolv(i))
+        for item in self.redis.lrange("clope-outside", 0, 100):
+            outside.append(self.resolv(item.decode('utf-8')))
 
-        for i in self.queue:
-            queue.append(self.resolv(i))
+        for item in self.redis.lrange("clope-queue", 0, 100):
+            queue.append(self.resolv(item.decode('utf-8')))
 
         return {"queue": queue, "outside": outside}
 
@@ -80,6 +82,27 @@ class Dispatcher():
             print("[+] websocket: client disconnected")
             self.wsclients.remove(websocket)
 
+    def process(self, card):
+        who = self.resolv(card)
+
+        print("[+] card scanned: %s [%s]" % (card, who))
+
+        if self.redis.execute_command("lpos", "clope-outside", card) is not None:
+            print("[+] queue: removing from outside: %s" % card)
+            self.redis.lrem("clope-outside", 1, card)
+
+        else:
+            if self.redis.execute_command("lpos", "clope-queue", card) is not None:
+                print("[+] queue: moving outside: %s" % card)
+                self.redis.rpush("clope-outside", card)
+                self.redis.lrem("clope-queue", 1, card)
+
+            else:
+                print("[+] queue: adding to queue: %s" % card)
+                self.redis.rpush("clope-queue", card)
+
+        self.persist(card)
+
     async def redisloop(self):
         pubsub = self.redis.pubsub()
         pubsub.subscribe("rfid-card")
@@ -89,23 +112,7 @@ class Dispatcher():
 
             if message and message['type'] == 'message':
                 card = message['data'].decode('utf-8')
-                who = self.resolv(card)
-
-                print("[+] card scanned: %s [%s]" % (card, who))
-
-                if card in self.outside:
-                    print("[+] queue: removing from outside: %s" % card)
-                    self.outside.remove(card)
-
-                else:
-                    if card in self.queue:
-                        print("[+] queue: moving outside: %s" % card)
-                        self.outside.append(card)
-                        self.queue.remove(card)
-
-                    else:
-                        print("[+] queue: adding to queue: %s" % card)
-                        self.queue.append(card)
+                self.process(card)
 
                 print("[+] forwarding data to clients")
 
